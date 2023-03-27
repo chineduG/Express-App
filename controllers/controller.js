@@ -38,15 +38,36 @@ export async function deleteQuestions(req, res){
  
 /** Get all result */
 export async function getResult(req, res){
-    res.json('result api get request')
-}
+    // res.json('result api get request')
+    try{
+        const r = await await Result.find();
+        res.json(r);
+    }catch(error){
+        res.json({error})
+    }
+  }
 
 /** Post all result */
 export async function postResult(req, res){
-    res.json('result api post request')
+    // res.json('result api post request')
+    try{
+        const {username, result, attempts, points, achived} = req.body;
+        if(!username && !result) throw new Error('Data Saved Successfully');
+
+        Result.create({username, result, attempts, points, achived});
+    } catch(error){
+        res.json(error)
+    }
 }
 
 /** Delete all result */
 export async function deleteResult(req, res){
-    res.json('result api delete request')
+    // res.json('result api delete request')
+    try{
+        await Result.deletemany();
+        res.json({msg: 'Result deleted successfully'});
+    } catch(error){
+        res.json(error)
+    }
+    
 }
